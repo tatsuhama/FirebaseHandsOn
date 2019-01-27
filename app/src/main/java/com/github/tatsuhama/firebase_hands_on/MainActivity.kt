@@ -14,6 +14,7 @@ import com.firebase.ui.auth.AuthUI
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
@@ -40,6 +41,8 @@ class MainActivity : AppCompatActivity() {
                 .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             startActivityForResult(intent, REQUEST_CODE_CAMERA)
         }
+
+        image_list.adapter = ImageItemAdapter()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
