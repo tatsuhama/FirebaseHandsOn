@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity(), ImageItemViewHolder.Action {
     }
 
     override fun openDetailImage(imageItem: ImageItem) {
-        startActivity(Intent(this, DetailActivity::class.java))
+        startActivity(DetailActivity.newIntent(this, imageItem))
     }
 
     private fun upload(bitmap: Bitmap) {
