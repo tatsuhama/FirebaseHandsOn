@@ -1,8 +1,11 @@
 package com.github.tatsuhama.firebase_hands_on
 
+import android.os.Parcelable
 import com.google.firebase.firestore.DocumentSnapshot
+import kotlinx.android.parcel.Parcelize
 
-data class ImageItem(val id: String, val fileName: String) {
+@Parcelize
+data class ImageItem(val id: String, val fileName: String) : Parcelable {
 
     companion object {
         fun from(documentSnapShot: DocumentSnapshot): ImageItem {
