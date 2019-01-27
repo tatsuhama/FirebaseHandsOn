@@ -2,6 +2,7 @@ package com.github.tatsuhama.firebase_hands_on
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -10,8 +11,12 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.firebase.ui.auth.AuthUI
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,6 +69,20 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK) {
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, outputUri)
+            upload(bitmap)
+        }
+    }
+
+    private fun upload(bitmap: Bitmap) {
+        val fileName = SimpleDateFormat("yyyyMMddHHmmss", Locale.US).format(Date()) + ".jpg"
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val imagesFolderRef = FirebaseStorage.getInstance().reference.child("images")
+        val uploadTask = imagesFolderRef.child(fileName).putBytes(baos.toByteArray())
+        uploadTask.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // TODO:write to database
+            }
         }
     }
 
