@@ -1,5 +1,6 @@
 package com.github.tatsuhama.firebase_hands_on
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -24,6 +25,14 @@ class LaunchActivity : AppCompatActivity() {
                 RC_SIGN_IN
             )
         } else {
+            openMainActivity()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN && resultCode == Activity.RESULT_OK) {
+            // Successfully signed in
             openMainActivity()
         }
     }
