@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.firebase.ui.auth.AuthUI
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.ByteArrayOutputStream
@@ -81,7 +82,8 @@ class MainActivity : AppCompatActivity() {
         val uploadTask = imagesFolderRef.child(fileName).putBytes(baos.toByteArray())
         uploadTask.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                // TODO:write to database
+                val collectionRef = FirebaseFirestore.getInstance().collection("images")
+                collectionRef.add(mapOf("fileName" to fileName))
             }
         }
     }
