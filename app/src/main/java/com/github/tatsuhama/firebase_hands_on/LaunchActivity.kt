@@ -1,5 +1,6 @@
 package com.github.tatsuhama.firebase_hands_on
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.firebase.ui.auth.AuthUI
@@ -22,7 +23,15 @@ class LaunchActivity : AppCompatActivity() {
                     .build(),
                 RC_SIGN_IN
             )
+        } else {
+            openMainActivity()
         }
+    }
+
+    private fun openMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     companion object {
