@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.firebase.firestore.FirebaseFirestore
 
-class ImageItemAdapter : RecyclerView.Adapter<ImageItemViewHolder>() {
+class ImageItemAdapter(private val action: ImageItemViewHolder.Action) : RecyclerView.Adapter<ImageItemViewHolder>() {
 
     private var items = listOf<ImageItem>()
 
@@ -18,7 +18,7 @@ class ImageItemAdapter : RecyclerView.Adapter<ImageItemViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageItemViewHolder {
-        return ImageItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false))
+        return ImageItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false), action)
     }
 
     override fun getItemCount(): Int = items.count()

@@ -20,7 +20,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ImageItemViewHolder.Action {
 
     private val outputUri: Uri by lazy {
         FileProvider.getUriForFile(
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_CODE_CAMERA)
         }
 
-        image_list.adapter = ImageItemAdapter()
+        image_list.adapter = ImageItemAdapter(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -75,6 +75,10 @@ class MainActivity : AppCompatActivity() {
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, outputUri)
             upload(bitmap)
         }
+    }
+
+    override fun openDetailImage(imageItem: ImageItem) {
+        startActivity(Intent(this, DetailActivity::class.java))
     }
 
     private fun upload(bitmap: Bitmap) {

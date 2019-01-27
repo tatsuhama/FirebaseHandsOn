@@ -7,7 +7,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 
-class ImageItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class ImageItemViewHolder(view: View, private val action: Action) : RecyclerView.ViewHolder(view) {
 
     fun bind(imageItem: ImageItem) {
         val imageView = itemView.findViewById<ImageView>(R.id.image)
@@ -19,6 +19,11 @@ class ImageItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
 
         itemView.findViewById<TextView>(R.id.fileNameText).text = imageItem.fileName
+        itemView.setOnClickListener { action.openDetailImage(imageItem) }
+    }
+
+    interface Action {
+        fun openDetailImage(imageItem: ImageItem)
     }
 
 }
