@@ -1,14 +1,27 @@
 package com.github.tatsuhama.firebase_hands_on
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import com.firebase.ui.auth.AuthUI
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
+
+    private val outputUri: Uri by lazy {
+        FileProvider.getUriForFile(
+            this@MainActivity,
+            BuildConfig.APPLICATION_ID + ".provider",
+            createOutputFile()
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,7 +29,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            startActivity(Intent(this@MainActivity, DetailActivity::class.java))
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                .putExtra(MediaStore.EXTRA_OUTPUT, outputUri)
+                .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            startActivityForResult(intent, REQUEST_CODE_CAMERA)
         }
     }
 
@@ -42,5 +58,24 @@ class MainActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_CAMERA && resultCode == Activity.RESULT_OK) {
+            val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, outputUri)
+        }
+    }
+
+    private fun createOutputFile(): File =
+        File(filesDir, "temp/photo.jpg").apply {
+            if (!exists()) {
+                parentFile.mkdirs()
+                createNewFile()
+            }
+        }
+
+    companion object {
+        private const val REQUEST_CODE_CAMERA = 123
     }
 }
