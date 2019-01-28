@@ -12,7 +12,7 @@ class ImageItemViewHolder(view: View, private val action: Action) : RecyclerView
     fun bind(imageItem: ImageItem) {
         val imageView = itemView.findViewById<ImageView>(R.id.image)
         val storageRef = FirebaseStorage.getInstance().reference
-        storageRef.child("images/${imageItem.fileName}").downloadUrl.addOnSuccessListener {
+        storageRef.child("images/${imageItem.thumbnailFileName}").downloadUrl.addOnSuccessListener {
             Glide.with(imageView.context).load(it).into(imageView)
         }.addOnFailureListener {
             // Handle any errors

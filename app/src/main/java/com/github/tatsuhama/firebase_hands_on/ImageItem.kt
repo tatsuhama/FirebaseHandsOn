@@ -7,6 +7,8 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ImageItem(val id: String, val fileName: String) : Parcelable {
 
+    val thumbnailFileName = "thumb_$fileName"
+
     companion object {
         fun from(documentSnapShot: DocumentSnapshot): ImageItem {
             val data = documentSnapShot.data ?: throw IllegalArgumentException("data is null")
