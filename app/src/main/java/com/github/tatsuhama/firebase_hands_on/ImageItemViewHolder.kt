@@ -1,5 +1,6 @@
 package com.github.tatsuhama.firebase_hands_on
 
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
@@ -18,8 +19,15 @@ class ImageItemViewHolder(view: View, private val action: Action) : RecyclerView
             // Handle any errors
         }
 
-        itemView.findViewById<TextView>(R.id.fileNameText).text = imageItem.fileName
+        itemView.findViewById<TextView>(R.id.fileNameText).apply {
+            text = imageItem.fileName
+            setTextColor(getTextColor())
+        }
         itemView.setOnClickListener { action.openDetailImage(imageItem) }
+    }
+
+    private fun getTextColor(): Int {
+        return Color.parseColor("#FF0000")
     }
 
     interface Action {
