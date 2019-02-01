@@ -12,6 +12,8 @@ import android.view.Menu
 import android.view.MenuItem
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -43,6 +45,20 @@ class MainActivity : AppCompatActivity(), ImageItemViewHolder.Action {
         }
 
         image_list.adapter = ImageItemAdapter(this)
+
+        fetchRemoteConfig()
+    }
+
+    private fun fetchRemoteConfig() {
+        val cacheExpirationSeconds = if (BuildConfig.DEBUG) 0 else 43200L // 12h
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setDeveloperModeEnabled(BuildConfig.DEBUG)
+            .build()
+        remoteConfig.setConfigSettings(configSettings)
+        remoteConfig
+            .fetch(cacheExpirationSeconds)
+            .addOnSuccessListener { remoteConfig.activateFetched() }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
