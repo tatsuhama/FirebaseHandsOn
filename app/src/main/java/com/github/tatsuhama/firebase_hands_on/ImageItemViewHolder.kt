@@ -28,7 +28,9 @@ class ImageItemViewHolder(view: View, private val action: Action) : RecyclerView
     }
 
     private fun getTextColor(): Int {
-        val remoteConfig = FirebaseRemoteConfig.getInstance()
+        val remoteConfig = FirebaseRemoteConfig.getInstance().apply {
+            setDefaults(mapOf("text_color" to "#FF0000"))
+        }
         val color = remoteConfig.getString("text_color")
         return Color.parseColor(color)
     }
