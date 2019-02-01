@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.storage.FirebaseStorage
 
 class ImageItemViewHolder(view: View, private val action: Action) : RecyclerView.ViewHolder(view) {
@@ -27,7 +28,9 @@ class ImageItemViewHolder(view: View, private val action: Action) : RecyclerView
     }
 
     private fun getTextColor(): Int {
-        return Color.parseColor("#FF0000")
+        val remoteConfig = FirebaseRemoteConfig.getInstance()
+        val color = remoteConfig.getString("text_color")
+        return Color.parseColor(color)
     }
 
     interface Action {
